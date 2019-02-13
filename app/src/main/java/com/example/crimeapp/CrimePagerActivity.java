@@ -30,7 +30,6 @@ public class CrimePagerActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_pager);
-        //int position = getIntent().getIntExtra(CRIME_POSITION, 1);
         UUID crimeId = (UUID) getIntent().getSerializableExtra(CRIME_UUID);
 
         mViewPager = findViewById(R.id.crime_view_pager);
