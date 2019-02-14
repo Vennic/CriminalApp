@@ -97,7 +97,7 @@ public class CrimeListFragment extends Fragment {
             Log.i("MyLog", "Bind method");  //LOGGING
             mCrime = crime;
             mTitleTextView.setText(crime.getTitle());
-            mDateTextView.setText(crime.getDate());
+            mDateTextView.setText(crime.getStringDate());
             mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
         }
 

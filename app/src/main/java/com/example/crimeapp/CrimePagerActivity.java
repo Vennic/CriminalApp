@@ -63,12 +63,12 @@ public class CrimePagerActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onPageSelected(int i) {
                 if (i == 0) {
-                    firstButton.setVisibility(View.INVISIBLE);
-                } else firstButton.setVisibility(View.VISIBLE);
+                    firstButton.setEnabled(false);
+                } else firstButton.setEnabled(true);
 
                 if (i == mCrimes.size() - 1) {
-                    lastButton.setVisibility(View.INVISIBLE);
-                } else lastButton.setVisibility(View.VISIBLE);
+                    lastButton.setEnabled(false);
+                } else lastButton.setEnabled(true);
             }
 
             @Override
@@ -80,7 +80,7 @@ public class CrimePagerActivity extends AppCompatActivity implements View.OnClic
             if (mCrimes.get(i).getId().equals(crimeId)) {
                 mViewPager.setCurrentItem(i);
                 if (i == 0)
-                    firstButton.setVisibility(View.INVISIBLE);
+                    firstButton.setEnabled(false);
                 break;
             }
         }
