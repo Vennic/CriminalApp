@@ -30,6 +30,8 @@ public class DatePickerFragment extends InstanceOfPicker {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
+        final int hour = calendar.get(Calendar.HOUR);
+        final int minute = calendar.get(Calendar.MINUTE);
 
         mDatePicker = v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
@@ -40,10 +42,10 @@ public class DatePickerFragment extends InstanceOfPicker {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int year = mDatePicker.getYear();
-                        int month = mDatePicker.getMonth();
-                        int day = mDatePicker.getDayOfMonth();
-                        Date date1 = new GregorianCalendar(year, month, day).getTime();
+                        int newYear = mDatePicker.getYear();
+                        int newMonth = mDatePicker.getMonth();
+                        int newDay = mDatePicker.getDayOfMonth();
+                        Date date1 = new GregorianCalendar(newYear, newMonth, newDay, hour, minute).getTime();
                         sendResult(Activity.RESULT_OK, date1, PICKER_EXTRA_DATE);
                     }
                 })

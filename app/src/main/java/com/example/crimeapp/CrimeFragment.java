@@ -1,17 +1,18 @@
 package com.example.crimeapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -75,6 +76,28 @@ public class CrimeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.delete_crime) {
+            CrimeLab crimeLab = CrimeLab.get(getActivity());
+            crimeLab.removeCrime(mCrime);
+            Intent intent = new Intent(getActivity(), CrimeListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            getActivity().finish();
+            Toast.makeText(getActivity(), "Crime removed", Toast.LENGTH_SHORT).show();
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 
     @Nullable
@@ -138,4 +161,5 @@ public class CrimeFragment extends Fragment {
 
         return v;
     }
+
 }

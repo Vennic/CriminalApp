@@ -38,7 +38,6 @@
     <Button
         android:id="@+id/time_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/time_button" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
