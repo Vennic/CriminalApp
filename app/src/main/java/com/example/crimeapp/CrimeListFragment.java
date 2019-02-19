@@ -28,7 +28,6 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mCrimeAdapter;
     private boolean mSubtitleVisible;
     public static final String EXTRA_SUBTITLE_VISIBLE = "android.crimeapp.subtitle_visible";
-    private int ITEM_ID;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +118,8 @@ public class CrimeListFragment extends Fragment {
             mCrimeAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mCrimeAdapter);
         } else {
-            mCrimeAdapter.notifyItemChanged(ITEM_ID);
+            mCrimeAdapter.setCrimes(crimes);
+            mCrimeAdapter.notifyDataSetChanged();
         }
         updateSubtitle();
     }
@@ -147,15 +147,11 @@ public class CrimeListFragment extends Fragment {
                 itemView.setOnClickListener(this);
                 Button button = itemView.findViewById(R.id.police_button);
 
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity(), "Police is coming for " + mCrime.getTitle(), Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+                button.setOnClickListener((v) -> Toast.makeText(getActivity(), "Police is coming for " + mCrime.getTitle(), Toast.LENGTH_SHORT)
+                        .show());
             }
         }
+
 
         public void bind(Crime crime) {
             Log.i("MyLog", "Bind method");  //LOGGING
@@ -167,7 +163,6 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            ITEM_ID = getAdapterPosition();
             Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
@@ -182,6 +177,10 @@ public class CrimeListFragment extends Fragment {
 
         public CrimeAdapter(List<Crime> crimes) {
             Log.i("MyLog", "CrimeAdapter constructor");  //LOGGING
+            mCrimes = crimes;
+        }
+
+        public void setCrimes(List<Crime> crimes) {
             mCrimes = crimes;
         }
 

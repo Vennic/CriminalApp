@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,8 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
-
-import static android.widget.CompoundButton.*;
 
 public class CrimeFragment extends Fragment {
     private Crime mCrime;
@@ -80,6 +77,14 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        CrimeLab.get(getActivity())
+                .updateCrime(mCrime);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_crime, menu);
@@ -110,35 +115,29 @@ public class CrimeFragment extends Fragment {
         mDateButton.setText(mCrime.getStringDate());
         mTimeButton.setText(new SimpleDateFormat("HH : mm", Locale.getDefault()).format(mCrime.getDate()));
 
-        mDateButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                DatePickerFragment datePickerFragment = InstanceOfPicker.newInstance(mCrime.getDate(), new DatePickerFragment());
-                datePickerFragment.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-                datePickerFragment.show(manager, DIALOG_ID);
-            }
+        mDateButton.setOnClickListener(v12 -> {
+            FragmentManager manager = getFragmentManager();
+            DatePickerFragment datePickerFragment = InstanceOfPicker.newInstance(mCrime.getDate(), new DatePickerFragment());
+            datePickerFragment.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+            datePickerFragment.show(manager, DIALOG_ID);
         });
 
-        mTimeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getFragmentManager();
-                TimePickerFragment pickerFragment = InstanceOfPicker.newInstance(mCrime.getDate(), new TimePickerFragment());
-                pickerFragment.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
-                pickerFragment.show(fragmentManager, DIALOG_ID);
-            }
+        mTimeButton.setOnClickListener(v1 -> {
+            FragmentManager fragmentManager = getFragmentManager();
+            TimePickerFragment pickerFragment = InstanceOfPicker.newInstance(mCrime.getDate(), new TimePickerFragment());
+            pickerFragment.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+            pickerFragment.show(fragmentManager, DIALOG_ID);
         });
+
+        CheckBox mSeriousCheckBox = v.findViewById(R.id.serious_crime_check);
+        mSeriousCheckBox.setChecked(mCrime.isRequiresPolice());
+
+        mSeriousCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> mCrime.setRequiresPolice(isChecked));
 
         mSolvedCheckBox = v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
 
-        mSolvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCrime.setSolved(isChecked);
-            }
-        });
+        mSolvedCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> mCrime.setSolved(isChecked));
 
         mTitleField = v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());

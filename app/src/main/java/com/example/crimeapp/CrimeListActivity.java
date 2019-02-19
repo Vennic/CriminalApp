@@ -20,14 +20,12 @@ public class CrimeListActivity extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         if (CrimeLab.get(this).getCrimes().size() == 0) {
             addButton.setVisibility(View.VISIBLE);
-            addButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Crime crime = new Crime();
-                    CrimeLab.get(CrimeListActivity.this).getCrimes().add(crime);
-                    Intent intent = CrimePagerActivity.newIntent(CrimeListActivity.this, crime.getId());
-                    startActivity(intent);
-                }
+
+            addButton.setOnClickListener(v -> {
+                Crime crime = new Crime();
+                CrimeLab.get(CrimeListActivity.this).addCrime(crime);
+                Intent intent = CrimePagerActivity.newIntent(CrimeListActivity.this, crime.getId());
+                startActivity(intent);
             });
         } else {
             addButton.setVisibility(View.INVISIBLE);

@@ -40,14 +40,11 @@ public class TimePickerFragment extends InstanceOfPicker {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle("Time of crime")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int newHour = mTimePicker.getHour();
-                        int newMinute = mTimePicker.getMinute();
-                        Date date1 = new GregorianCalendar(year, month, day, newHour, newMinute).getTime();
-                        sendResult(Activity.RESULT_OK, date1, PICKER_EXTRA_TIME);
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    int newHour = mTimePicker.getHour();
+                    int newMinute = mTimePicker.getMinute();
+                    Date date1 = new GregorianCalendar(year, month, day, newHour, newMinute).getTime();
+                    sendResult(Activity.RESULT_OK, date1, PICKER_EXTRA_TIME);
                 })
                 .create();
     }

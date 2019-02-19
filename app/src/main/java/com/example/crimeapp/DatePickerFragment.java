@@ -39,15 +39,12 @@ public class DatePickerFragment extends InstanceOfPicker {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.date_picker_title)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int newYear = mDatePicker.getYear();
-                        int newMonth = mDatePicker.getMonth();
-                        int newDay = mDatePicker.getDayOfMonth();
-                        Date date1 = new GregorianCalendar(newYear, newMonth, newDay, hour, minute).getTime();
-                        sendResult(Activity.RESULT_OK, date1, PICKER_EXTRA_DATE);
-                    }
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    int newYear = mDatePicker.getYear();
+                    int newMonth = mDatePicker.getMonth();
+                    int newDay = mDatePicker.getDayOfMonth();
+                    Date date1 = new GregorianCalendar(newYear, newMonth, newDay, hour, minute).getTime();
+                    sendResult(Activity.RESULT_OK, date1, PICKER_EXTRA_DATE);
                 })
                 .create();
     }
