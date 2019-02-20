@@ -81,6 +81,8 @@ public class CrimePagerActivity extends AppCompatActivity implements View.OnClic
                 mViewPager.setCurrentItem(i);
                 if (i == 0)
                     firstButton.setEnabled(false);
+                if (i == mCrimes.size() - 1)
+                    lastButton.setEnabled(false);
                 break;
             }
         }

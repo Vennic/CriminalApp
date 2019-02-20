@@ -14,7 +14,19 @@
     <string name="subtitle_format">%1$d crimes</string>
     <string name="remove_crime">Remove crime</string>
     <string name="add_crime">Add new Crime</string>
+    <string name="crime_suspect_text">Choose suspect</string>
+    <string name="crime_report_text">Send crime report</string>
     <string name="serious_crime">Serious crime</string>
+    <string name="call_button">Call suspect</string>
+    <string name="crime_report">%1$s!
+        The crime was discovered on %2$s. %3$s, and %4$s
+    </string>
+    <string name="crime_report_solved">The case is solved</string>
+    <string name="crime_report_unsolved">The case is not solved</string>
+    <string name="crime_report_no_suspect">there is no suspect.</string>
+    <string name="crime_report_suspect">the suspect is %s.</string>
+    <string name="crime_report_subject">CriminalIntent crime report</string>
+    <string name="send_report">Send crime report via</string>
 
     <plurals name="subtitle_plural">
         <item quantity="one">%1$d crime</item>
