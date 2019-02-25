@@ -8,6 +8,7 @@ import com.example.crimeapp.database.CrimeBaseHelper;
 import com.example.crimeapp.database.CrimeCursorWrapper;
 import com.example.crimeapp.database.CrimedbSchema.CrimeTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,11 @@ public class CrimeLab {
                 null,
                 null,
                 null));
+    }
+
+    public File getPhotoFile(Crime crime) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, crime.getPhotoFileName());
     }
 
     public static CrimeLab get(Context context) {

@@ -14,6 +14,10 @@ public class Crime {
     private String mSuspect;
     private String mSuspectPhone;
 
+    public String getPhotoFileName() {
+        return "IMG" + getId().toString() + ".jpg";
+    }
+
     public String getSuspectPhone() {
         return mSuspectPhone;
     }
@@ -79,4 +83,6 @@ public class Crime {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
+
 }
+
