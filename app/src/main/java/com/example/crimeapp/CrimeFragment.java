@@ -1,6 +1,7 @@
 package com.example.crimeapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -53,12 +54,17 @@ public class CrimeFragment extends Fragment {
     private File mPhotoFile;
     private int width;
     private int height;
+    private Callbacks mCallbacks;
     private static final String CRIME_ID = "android_crime_fragment_ID";
     private static final String DIALOG_ID = "android_crime_dialogFragment_ID";
     private final static int REQUEST_DATE = 0;
     private final static int REQUEST_TIME = 1;
     private final static int REQUEST_CONTACT = 2;
     private final static int REQUEST_CAMERA = 3;
+
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
 
 
     public static CrimeFragment newInstance(UUID id) {
@@ -101,6 +107,23 @@ public class CrimeFragment extends Fragment {
         }
     }
 
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK)  {
@@ -112,18 +135,15 @@ public class CrimeFragment extends Fragment {
                     .getSerializableExtra(DatePickerFragment.PICKER_EXTRA_DATE);
 
             mCrime.setDate(date);
+            updateCrime();
             mDateButton.setText(mCrime.getStringDate());
-        }
-
-        if (requestCode == REQUEST_CAMERA) {
+        } else if (requestCode == REQUEST_CAMERA) {
             Uri uri = FileProvider.getUriForFile(getActivity(), "com.example.android.crimeapp.fileprovider",
                     mPhotoFile);
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
+            updateCrime();
             updatePhotoView();
-        }
-
-        if (requestCode == REQUEST_CONTACT && data != null) {
+        } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
 
             String[] queryFields = new String[] {ContactsContract.CommonDataKinds.Phone.NUMBER,
@@ -144,15 +164,15 @@ public class CrimeFragment extends Fragment {
                 String suspect = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 mCrime.setSuspect(suspect);
+                updateCrime();
                 mCrime.setSuspectPhone(phoneNumber);
                 mContactButton.setText(suspect);
             }
-        }
-
-        if (requestCode == REQUEST_TIME) {
+        } else if (requestCode == REQUEST_TIME) {
             Date date = (Date) data
                     .getSerializableExtra(TimePickerFragment.PICKER_EXTRA_TIME);
             mCrime.setDate(date);
+            updateCrime();
             mTimeButton.setText(new SimpleDateFormat("HH : mm", Locale.getDefault()).format(date));
         }
 
@@ -308,7 +328,10 @@ public class CrimeFragment extends Fragment {
         mSolvedCheckBox = v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
 
-        mSolvedCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> mCrime.setSolved(isChecked));
+        mSolvedCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mCrime.setSolved(isChecked);
+            updateCrime();
+        });
 
         mTitleField = v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
@@ -321,6 +344,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mCrime.setTitle(s.toString());
+                updateCrime();
             }
 
             @Override

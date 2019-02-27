@@ -15,7 +15,7 @@ import android.widget.Button;
 import java.util.List;
 import java.util.UUID;
 
-public class CrimePagerActivity extends AppCompatActivity implements View.OnClickListener {
+public class CrimePagerActivity extends AppCompatActivity implements View.OnClickListener, CrimeFragment.Callbacks {
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
     private static final String CRIME_UUID = "android_crimeactivity_crimeID";
@@ -98,5 +98,9 @@ public class CrimePagerActivity extends AppCompatActivity implements View.OnClic
                 mViewPager.setCurrentItem(mCrimes.size() - 1);
                 break;
         }
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
     }
 }

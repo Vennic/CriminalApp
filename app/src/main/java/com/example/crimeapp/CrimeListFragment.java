@@ -1,6 +1,8 @@
 package com.example.crimeapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,7 +30,25 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mCrimeAdapter;
     private boolean mSubtitleVisible;
+    private Callbacks mCallbacks;
     public static final String EXTRA_SUBTITLE_VISIBLE = "android.crimeapp.subtitle_visible";
+
+    public interface Callbacks {
+        void onCrimeSelected(Crime crime);
+        void onCrimeDeleted();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,8 +98,8 @@ public class CrimeListFragment extends Fragment {
             case R.id.new_crime:
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                mCallbacks.onCrimeSelected(crime);
+                //updateUI();
                 return true;
             case R.id.show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -109,7 +130,7 @@ public class CrimeListFragment extends Fragment {
         activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
-    private void updateUI(){
+    public void updateUI(){
         Log.i("MyLog", "updateUI"); //LOGGING
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
@@ -117,6 +138,9 @@ public class CrimeListFragment extends Fragment {
         if (mCrimeAdapter == null) {
             mCrimeAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mCrimeAdapter);
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mCrimeAdapter);
+            ItemTouchHelper helper = new ItemTouchHelper(callback);
+            helper.attachToRecyclerView(mCrimeRecyclerView);
         } else {
             mCrimeAdapter.setCrimes(crimes);
             mCrimeAdapter.notifyDataSetChanged();
@@ -124,7 +148,7 @@ public class CrimeListFragment extends Fragment {
         updateSubtitle();
     }
 
-    //Holder
+
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mTitleTextView;
@@ -163,14 +187,13 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            mCallbacks.onCrimeSelected(mCrime);
         }
     }
 
 
     //Adapter
-    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> implements ItemTouchHelperAdapter{
         private List<Crime> mCrimes;
         private final int TYPE_CRIME_ONE = 1;
         private final int TYPE_CRIME_TWO = 2;
@@ -213,6 +236,16 @@ public class CrimeListFragment extends Fragment {
                 return TYPE_CRIME_ONE;
             } else
                 return TYPE_CRIME_TWO;
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            CrimeLab crimeLab = CrimeLab.get(getActivity());
+            crimeLab.removeCrime(crimeLab.getCrimes().get(position));
+            mCrimeAdapter.setCrimes(crimeLab.getCrimes());
+            notifyItemRemoved(position);
+            updateSubtitle();
+            mCallbacks.onCrimeDeleted();
         }
     }
 }
