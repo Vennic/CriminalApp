@@ -39,7 +39,7 @@ public class TimePickerFragment extends InstanceOfPicker {
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setTitle("Time of crime")
+                .setTitle(R.string.time_picker_title)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     int newHour = mTimePicker.getHour();
                     int newMinute = mTimePicker.getMinute();

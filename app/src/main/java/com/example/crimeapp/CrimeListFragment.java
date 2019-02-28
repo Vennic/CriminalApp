@@ -23,7 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CrimeListFragment extends Fragment {
 
@@ -176,12 +178,17 @@ public class CrimeListFragment extends Fragment {
             }
         }
 
+        public String getStringDate() {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(getActivity().getString(R.string.date_format), Locale.getDefault());
+            return dateFormat.format(mCrime.getDate());
+        }
+
 
         public void bind(Crime crime) {
             Log.i("MyLog", "Bind method");  //LOGGING
             mCrime = crime;
             mTitleTextView.setText(crime.getTitle());
-            mDateTextView.setText(crime.getStringDate());
+            mDateTextView.setText(getStringDate());
             mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
         }
 

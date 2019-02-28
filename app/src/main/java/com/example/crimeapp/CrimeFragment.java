@@ -84,7 +84,7 @@ public class CrimeFragment extends Fragment {
             solvedString = getString(R.string.crime_report_unsolved);
         }
 
-        String dateFormat = mCrime.getStringDate();
+        String dateFormat = getStringDate();
 
         String suspect = mCrime.getSuspect();
 
@@ -124,6 +124,11 @@ public class CrimeFragment extends Fragment {
         mCallbacks = null;
     }
 
+    public String getStringDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(getActivity().getString(R.string.date_format), Locale.getDefault());
+        return dateFormat.format(mCrime.getDate());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK)  {
@@ -136,7 +141,7 @@ public class CrimeFragment extends Fragment {
 
             mCrime.setDate(date);
             updateCrime();
-            mDateButton.setText(mCrime.getStringDate());
+            mDateButton.setText(getStringDate());
         } else if (requestCode == REQUEST_CAMERA) {
             Uri uri = FileProvider.getUriForFile(getActivity(), "com.example.android.crimeapp.fileprovider",
                     mPhotoFile);
@@ -220,10 +225,9 @@ public class CrimeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
-
         mDateButton = v.findViewById(R.id.crime_date);
         mTimeButton = v.findViewById(R.id.time_button);
-        mDateButton.setText(mCrime.getStringDate());
+        mDateButton.setText(getStringDate());
         mTimeButton.setText(new SimpleDateFormat("HH : mm", Locale.getDefault()).format(mCrime.getDate()));
 
         mImageView = v.findViewById(R.id.crime_photo);

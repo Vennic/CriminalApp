@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CrimeApp</string>
+    <string name="crime_title_hint">Введите заголовок нарушения.</string>
+    <string name="crime_title_lable">Заголовок</string>
+    <string name="crime_details_lable">Описание</string>
+    <string name="crime_solved_lable">Раскрыто</string>
+    <string name="solve_crime">SoS</string>
+    <string name="lastButton">В конец</string>
+    <string name="firstButton">В начало</string>
+    <string name="date_picker_title">Дата нарушения</string>
+    <string name="date_format">dd MMMM yyyy</string>
+    <string name="new_crime">Новое нарушение</string>
+    <string name="show_subtitle">Показать заголовок</string>
+    <string name="hide_subtitle">Скрыть заголовок</string>
+    <string name="subtitle_format">%1$d нарушений</string>
+    <string name="remove_crime">Удалить</string>
+    <string name="add_crime">Добавить новое нарушение</string>
+    <string name="crime_suspect_text">Выбрать нарушителя</string>
+    <string name="crime_report_text">Отправить отчет</string>
+    <string name="serious_crime">Серьезное нарушение</string>
+    <string name="call_button">Позвонить нарушителю</string>
+    <string name="crime_report">%1$s!
+        Нарушение было обнаружено %2$s. %3$s, и %4$s
+    </string>
+    <string name="crime_report_solved">Нарушение раскрыто</string>
+    <string name="crime_report_unsolved">Нарушение не раскрыто</string>
+    <string name="crime_report_no_suspect">нарушитель не установлен.</string>
+    <string name="crime_report_suspect">нарушитель %s.</string>
+    <string name="crime_report_subject">Отчет по нарушению:</string>
+    <string name="send_report">Отправить отчет через</string>
+
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$d нарушение</item>
+        <item quantity="few">%1$d нарушения</item>
+        <item quantity="many">%1$d нарушений</item>
+        <item quantity="other">%1$d нарушений</item>
+    </plurals>
+    <string name="time_picker_title">Время нарушения</string>
+
+</resources>

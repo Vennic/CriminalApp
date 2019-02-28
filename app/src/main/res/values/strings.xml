@@ -8,6 +8,8 @@
     <string name="lastButton">Last Crime</string>
     <string name="firstButton">First Crime</string>
     <string name="date_picker_title">Date of crime</string>
+    <string name="date_format">EEE, dd MMMM yyyy</string>
+    <string name="time_picker_title">Time of crime</string>
     <string name="new_crime">New Crime</string>
     <string name="show_subtitle">Show subtitle</string>
     <string name="hide_subtitle">Hide subtitle</string>

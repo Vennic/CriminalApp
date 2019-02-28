@@ -63,11 +63,6 @@ public class Crime {
         mTitle = title;
     }
 
-    public String getStringDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMMM yyyy", Locale.getDefault());
-        return dateFormat.format(mDate);
-    }
-
     public Date getDate() {
         return mDate;
     }
